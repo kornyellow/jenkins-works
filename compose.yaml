@@ -1,6 +1,6 @@
 services:
   web:
     container_name: api
-    image: kornyellow/cicd:lastest
+    image: kornyellow/jenkins-works:lastest
     ports:
       - "5001:5000"
