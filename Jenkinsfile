@@ -2,8 +2,11 @@ pipeline {
     agent {
         label 'test'
     }
+    environment {
+        BASE_URL = "http://127.0.0.1:5000"
+    }
     stages {
-        stage('Clone simple-api repository') {
+        stage('Clone API repository') {
             steps {
                 git url: 'https://github.com/kornyellow/jenkins-works.git', branch: 'main'
             }
@@ -13,7 +16,7 @@ pipeline {
                 script {
                     sh 'pip install -r requirements.txt'
                     sh 'python3 app.py &'
-                    sh 'sleep 5'
+                    sh 'sleep 3'
                     sh 'python3 test_unit.py'
                 }
             }
@@ -24,7 +27,7 @@ pipeline {
                     dir('./robot3/') {
                         git url: 'https://github.com/kornyellow/jenkins-works-test.git', branch: 'main'
                     }
-                    sh 'robot ./robot3/test_robot.robot'
+                    sh 'robot --variable BASE_URL:${BASE_URL} ./robot3/test_robot.robot'
                 }
             }
         }
