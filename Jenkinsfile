@@ -38,8 +38,10 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 script {
-                    sh 'docker login'
-                    sh 'docker push kornyellow/jenkins-works:latest'
+                    withCredentials([string(credentialsId: 'dockerhub-access-token', variable: 'DOCKER_HUB_ACCESS_TOKEN')]) {
+                        sh 'echo $DOCKER_HUB_ACCESS_TOKEN | docker login --username kornyellow --password-stdin'
+                        sh 'docker push kornyellow/jenkins-works:latest'
+                    }
                 }
             }
         }
